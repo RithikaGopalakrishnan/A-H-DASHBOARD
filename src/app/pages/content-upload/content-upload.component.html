@@ -1,0 +1,185 @@
+<div class="content-header">
+  <h2>Content Upload</h2>
+
+  <div class="actions">
+    <button class="export-btn">Export</button>
+    <button class="upload-btn">
+      <span>+</span> Upload Video
+    </button>
+  </div>
+</div>
+<!-- WHITE CONTAINER -->
+<div class="content-card">
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab active">Video</button>
+      <button class="tab">Audio</button>
+      <button class="tab">Image</button>
+    </div>
+
+    <div class="actions">
+      <input class="search" type="text" placeholder="Search..." />
+      <select class="visibility">
+        <option>Visibility</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <select><option>Tags</option></select>
+    <select><option>Content Type</option></select>
+    <select><option>Last Month</option></select>
+    <input type="text" placeholder="DD/MM/YYYY" />
+
+    <label class="checkbox">
+      <span>Select Multiple</span>
+      <input type="checkbox" checked />
+    </label>
+  </div>
+
+  <!-- BLUE SELECTION BAR -->
+  <div class="selection-bar">
+  <span class="selection-text">12 items selected</span>
+
+  <div class="selection-right">
+    <!-- DELETE FIRST -->
+    <button class="delete-btn">
+      🗑 Delete
+    </button>
+
+    <!-- THEN VISIBLE ALL -->
+    <label class="visible-toggle">
+      <span class="toggle-text">Visible all</span>
+      <input type="checkbox" checked />
+      <span class="toggle"></span>
+    </label>
+  </div>
+</div>
+
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-state">
+    <i class="fa fa-spinner fa-spin"></i>
+    <span>Loading videos...</span>
+  </div>
+  
+  <!-- Error State -->
+  <div *ngIf="error" class="error-state">
+    <i class="fa fa-exclamation-triangle"></i>
+    <span>{{ error }}</span>
+    <button (click)="loadVideos()" class="retry-btn">Retry</button>
+  </div>
+
+  <!-- TABLE -->
+  <table class="content-table" *ngIf="!loading && !error">
+    <thead>
+      <tr>
+        <th><input type="checkbox" /></th>
+        <th>S.no</th>
+        <th>About Video</th>
+        <th>Tags Used</th>
+        <th>Size</th>
+        <th>Status</th>
+        <th>Uploaded Date</th>
+        <th>Converted</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <!-- ROW -->
+     <tr *ngFor="let video of videos; let i = index">
+      <td><input type="checkbox" /></td>
+
+      <!-- S.NO -->
+      <td>{{ i + 1 }}</td>
+
+      <!-- ABOUT VIDEO -->
+      <td>
+        <div class="video-cell">
+          <div class="video-thumbnail"><img src="https://img.youtube.com/vi/Q2K8DzoOd6o/hqdefault.jpg"></div>
+          <div>
+            <div class="video-title">{{ video.title }}</div>
+            <div class="video-meta">
+              ⏱ {{ video.duration || 'N/A' }} · {{ video.tags || 'N/A' }}
+            </div>
+          </div>
+        </div>
+      </td>
+
+      <!-- TAGS USED -->
+      <td>{{ video.tagUsed || 'N/A' }}</td>
+
+      <!-- SIZE -->
+      <td>{{ video.size || 'N/A' }}</td>
+
+      <!-- STATUS -->
+      <td class="status-cell">
+        <label class="switch">
+          <input
+            type="checkbox"
+            [checked]="video.status === 'Hidden'"
+          />
+          <span class="slider"></span>
+        </label>
+        <span>{{ video.status || 'Public' }}</span>
+      </td>
+
+      <!-- UPLOADED DATE -->
+      <td>
+        {{ getFormattedDate(video.uploadedDate) }}
+      </td>
+
+      <!-- CONVERTED -->
+      <td class="converted">
+        <span *ngIf="video.converted">✔</span>
+        <span *ngIf="!video.converted">✗</span>
+      </td>
+
+      <!-- ACTION -->
+      <td class="action-cell">
+        <button class="icon-btn" (click)="editVideo(video)">✏️</button>
+        <button class="icon-btn" (click)="deleteVideo(video)">🗑</button>
+      </td>
+    </tr>
+
+      <!-- DUPLICATE ROWS AS NEEDED -->
+    </tbody>
+  </table>
+
+  <!-- PAGINATION -->
+  <!-- <div class="pagination">
+    <div class="pages">
+      ← 1 <span class="active">2</span> 3 4 5 6 … 24 →
+    </div>
+    <div class="results">34 Results</div>
+  </div>
+
+</div> -->
+<div class="pagination">
+  <div class="pages">
+    <span class="arrow">←</span>
+
+    <span class="page">1</span>
+    <span class="page active">2</span>
+    <span class="page">3</span>
+    <span class="page">4</span>
+    <span class="page">5</span>
+    <span class="page">6</span>
+    <span class="dots">…</span>
+    <span class="page">24</span>
+
+    <span class="arrow">→</span>
+  </div>
+
+  <div class="results">34 Results</div>
+</div>
+
+
+
+
+
+
